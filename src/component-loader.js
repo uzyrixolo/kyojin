@@ -5,7 +5,8 @@
 
 class ComponentLoader {
   constructor() {
-    this.componentsPath = '/src/components/';
+    // Handle both development and production paths
+    this.componentsPath = import.meta.env.DEV ? '/src/components/' : '/assets/components/';
     this.loadedComponents = new Map();
   }
 
@@ -20,9 +21,31 @@ class ComponentLoader {
     }
 
     try {
-      const response = await fetch(`${this.componentsPath}${componentName}.html`);
-      if (!response.ok) {
-        throw new Error(`Failed to load component: ${componentName}`);
+      // Try multiple possible paths for better compatibility
+      const possiblePaths = [
+        `${this.componentsPath}${componentName}.html`,
+        `/src/components/${componentName}.html`,
+        `./src/components/${componentName}.html`,
+        `/assets/components/${componentName}.html`
+      ];
+
+      let response = null;
+      let lastError = null;
+
+      for (const path of possiblePaths) {
+        try {
+          response = await fetch(path);
+          if (response.ok) {
+            break;
+          }
+        } catch (error) {
+          lastError = error;
+          continue;
+        }
+      }
+
+      if (!response || !response.ok) {
+        throw new Error(`Failed to load component: ${componentName} - ${lastError?.message || 'All paths failed'}`);
       }
       
       const html = await response.text();

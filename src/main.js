@@ -1,5 +1,6 @@
 import './style.css'
 import anime from 'animejs'
+import MobileMenu from './mobile-menu.js'
 
 // KYOJIN Animation System
 class KyojinAnimations {
@@ -305,6 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new KyojinAnimations()
     new SmoothScroll()
     new PerformanceMonitor()
+    new MobileMenu()
     
     console.log('✅ KYOJIN - Ready!')
   } catch (error) {
@@ -313,4 +315,4 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 // Export for potential external use
-export { KyojinAnimations, SmoothScroll, PerformanceMonitor }
+export { KyojinAnimations, SmoothScroll, PerformanceMonitor, MobileMenu }

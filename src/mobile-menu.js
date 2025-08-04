@@ -1,89 +1,93 @@
 // Mobile Menu Functionality
-document.addEventListener('DOMContentLoaded', function() {
-  const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-  const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
-  const mobileMenuClose = document.querySelector('.mobile-menu-close');
-  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-  const body = document.body;
-
-  // Toggle mobile menu
-  function toggleMobileMenu() {
-    const isActive = mobileMenuOverlay.classList.contains('active');
+class MobileMenu {
+  constructor() {
+    this.menuToggle = document.querySelector('.mobile-menu-toggle')
+    this.menuOverlay = document.querySelector('.mobile-menu-overlay')
+    this.menuLinks = document.querySelectorAll('.mobile-nav-link')
+    this.isOpen = false
     
-    if (isActive) {
-      closeMobileMenu();
-    } else {
-      openMobileMenu();
+    this.init()
+  }
+  
+  init() {
+    if (!this.menuToggle || !this.menuOverlay) {
+      console.warn('Mobile menu elements not found')
+      return
     }
-  }
-
-  // Open mobile menu
-  function openMobileMenu() {
-    mobileMenuToggle.classList.add('active');
-    mobileMenuOverlay.classList.add('active');
-    body.style.overflow = 'hidden'; // Prevent body scrolling
     
-    // Add entrance animation to menu items
-    mobileNavLinks.forEach((link, index) => {
-      link.style.opacity = '0';
-      link.style.transform = 'translateX(-20px)';
-      
-      setTimeout(() => {
-        link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-        link.style.opacity = '1';
-        link.style.transform = 'translateX(0)';
-      }, 100 + (index * 50));
-    });
+    this.setupEventListeners()
   }
-
-  // Close mobile menu
-  function closeMobileMenu() {
-    mobileMenuToggle.classList.remove('active');
-    mobileMenuOverlay.classList.remove('active');
-    body.style.overflow = ''; // Restore body scrolling
+  
+  setupEventListeners() {
+    // Toggle menu on hamburger click
+    this.menuToggle.addEventListener('click', (e) => {
+      e.preventDefault()
+      this.toggleMenu()
+    })
     
-    // Reset menu items animation
-    mobileNavLinks.forEach(link => {
-      link.style.transition = '';
-      link.style.opacity = '';
-      link.style.transform = '';
-    });
-  }
-
-  // Event listeners
-  if (mobileMenuToggle) {
-    mobileMenuToggle.addEventListener('click', toggleMobileMenu);
-  }
-
-  if (mobileMenuClose) {
-    mobileMenuClose.addEventListener('click', closeMobileMenu);
-  }
-
-  // Close menu when clicking outside
-  if (mobileMenuOverlay) {
-    mobileMenuOverlay.addEventListener('click', function(e) {
-      if (e.target === mobileMenuOverlay) {
-        closeMobileMenu();
+    // Close menu when clicking on overlay
+    this.menuOverlay.addEventListener('click', (e) => {
+      if (e.target === this.menuOverlay) {
+        this.closeMenu()
       }
-    });
+    })
+    
+    // Close menu when clicking on menu links
+    this.menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        this.closeMenu()
+      })
+    })
+    
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.isOpen) {
+        this.closeMenu()
+      }
+    })
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900 && this.isOpen) {
+        this.closeMenu()
+      }
+    })
   }
-
-  // Close menu when clicking on nav links
-  mobileNavLinks.forEach(link => {
-    link.addEventListener('click', closeMobileMenu);
-  });
-
-  // Handle escape key
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && mobileMenuOverlay.classList.contains('active')) {
-      closeMobileMenu();
+  
+  toggleMenu() {
+    if (this.isOpen) {
+      this.closeMenu()
+    } else {
+      this.openMenu()
     }
-  });
+  }
+  
+  openMenu() {
+    this.isOpen = true
+    this.menuToggle.classList.add('active')
+    this.menuOverlay.classList.add('active')
+    document.body.style.overflow = 'hidden'
+    
+    // Set focus to first menu item for accessibility
+    setTimeout(() => {
+      const firstLink = this.menuOverlay.querySelector('.mobile-nav-link')
+      if (firstLink) {
+        firstLink.focus()
+      }
+    }, 300)
+  }
+  
+  closeMenu() {
+    this.isOpen = false
+    this.menuToggle.classList.remove('active')
+    this.menuOverlay.classList.remove('active')
+    document.body.style.overflow = ''
+  }
+}
 
-  // Handle window resize
-  window.addEventListener('resize', function() {
-    if (window.innerWidth > 768 && mobileMenuOverlay.classList.contains('active')) {
-      closeMobileMenu();
-    }
-  });
-});
+// Initialize mobile menu when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  new MobileMenu()
+})
+
+export default MobileMenu

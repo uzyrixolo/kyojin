@@ -4,40 +4,6 @@
   "outputDirectory": "dist",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "routes": [
-    {
-      "src": "/assets/components/(.*\\.html)",
-      "dest": "/assets/components/$1",
-      "headers": {
-        "Content-Type": "text/html; charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type"
-      }
-    },
-    {
-      "src": "/src/components/(.*\\.html)",
-      "dest": "/assets/components/$1",
-      "headers": {
-        "Content-Type": "text/html; charset=utf-8"
-      }
-    },
-    {
-      "src": "/components/(.*\\.html)",
-      "dest": "/assets/components/$1",
-      "headers": {
-        "Content-Type": "text/html; charset=utf-8"
-      }
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
   "headers": [
     {
       "source": "/assets/components/*",

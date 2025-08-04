@@ -18,18 +18,21 @@ class ComponentLoader {
     const filename = `${componentName}.html`;
     
     if (this.isProduction) {
-      // Production paths for Vercel
+      // Production paths for Vercel - try assets first
       return [
         `/assets/components/${filename}`,
+        `assets/components/${filename}`, 
         `./assets/components/${filename}`,
         `/dist/assets/components/${filename}`,
-        `components/${filename}`
+        `components/${filename}`,
+        `/src/components/${filename}` // fallback
       ];
     } else {
       // Development paths
       return [
         `/src/components/${filename}`,
-        `./src/components/${filename}`
+        `./src/components/${filename}`,
+        `/assets/components/${filename}` // fallback for dev build
       ];
     }
   }

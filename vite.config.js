@@ -36,17 +36,9 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    assetsDir: 'assets',
-    rollupOptions: {
-      input: {
-        main: './index.html',
-        components: './index-components.html',
-        'data-components': './index-data-components.html'
-      }
-    }
+    assetsDir: 'assets'
   },
   plugins: [copyComponentsPlugin()],
-  assetsInclude: ['**/*.html'],
   optimizeDeps: {
     exclude: ['animejs']
   }

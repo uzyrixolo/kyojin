@@ -6,22 +6,32 @@
   "installCommand": "npm install",
   "routes": [
     {
-      "src": "/assets/components/(.*)",
+      "src": "/assets/components/(.*\\.html)",
+      "dest": "/assets/components/$1",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type"
+      }
+    },
+    {
+      "src": "/src/components/(.*\\.html)",
       "dest": "/assets/components/$1",
       "headers": {
         "Content-Type": "text/html; charset=utf-8"
       }
     },
     {
-      "src": "/src/components/(.*)",
+      "src": "/components/(.*\\.html)",
       "dest": "/assets/components/$1",
       "headers": {
         "Content-Type": "text/html; charset=utf-8"
       }
     },
     {
-      "src": "/src/(.*\\.(css|js|png|jpg|jpeg|gif|svg|ico|mp4|webm))",
-      "dest": "/$1"
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
     },
     {
       "src": "/(.*)",
@@ -30,7 +40,7 @@
   ],
   "headers": [
     {
-      "source": "/assets/components/(.*)",
+      "source": "/assets/components/*",
       "headers": [
         {
           "key": "Content-Type",
@@ -38,7 +48,7 @@
         },
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=3600"
         }
       ]
     }

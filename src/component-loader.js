@@ -5,9 +5,33 @@
 
 class ComponentLoader {
   constructor() {
-    // Handle both development and production paths
-    this.componentsPath = import.meta.env.DEV ? '/src/components/' : '/assets/components/';
     this.loadedComponents = new Map();
+    this.isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+  }
+
+  /**
+   * Get the correct path for components based on environment
+   * @param {string} componentName - Name of the component file
+   * @returns {string[]} - Array of possible paths to try
+   */
+  getComponentPaths(componentName) {
+    const filename = `${componentName}.html`;
+    
+    if (this.isProduction) {
+      // Production paths for Vercel
+      return [
+        `/assets/components/${filename}`,
+        `./assets/components/${filename}`,
+        `/dist/assets/components/${filename}`,
+        `components/${filename}`
+      ];
+    } else {
+      // Development paths
+      return [
+        `/src/components/${filename}`,
+        `./src/components/${filename}`
+      ];
+    }
   }
 
   /**
@@ -20,39 +44,43 @@ class ComponentLoader {
       return this.loadedComponents.get(componentName);
     }
 
-    try {
-      // Try multiple possible paths for better compatibility
-      const possiblePaths = [
-        `${this.componentsPath}${componentName}.html`,
-        `/src/components/${componentName}.html`,
-        `./src/components/${componentName}.html`,
-        `/assets/components/${componentName}.html`
-      ];
+    const possiblePaths = this.getComponentPaths(componentName);
+    let response = null;
+    let lastError = null;
 
-      let response = null;
-      let lastError = null;
+    console.log(`Loading component: ${componentName}, Environment: ${this.isProduction ? 'production' : 'development'}`);
+    console.log(`Trying paths:`, possiblePaths);
 
-      for (const path of possiblePaths) {
-        try {
-          response = await fetch(path);
-          if (response.ok) {
-            break;
-          }
-        } catch (error) {
-          lastError = error;
-          continue;
+    for (const path of possiblePaths) {
+      try {
+        console.log(`Attempting to fetch: ${path}`);
+        response = await fetch(path);
+        if (response.ok) {
+          console.log(`Successfully loaded from: ${path}`);
+          break;
+        } else {
+          console.log(`Failed to load from ${path}: ${response.status} ${response.statusText}`);
         }
+      } catch (error) {
+        console.log(`Error fetching ${path}:`, error.message);
+        lastError = error;
+        continue;
       }
+    }
 
-      if (!response || !response.ok) {
-        throw new Error(`Failed to load component: ${componentName} - ${lastError?.message || 'All paths failed'}`);
-      }
-      
+    if (!response || !response.ok) {
+      const errorMsg = `Failed to load component: ${componentName} from all paths. Last error: ${lastError?.message || 'Unknown error'}`;
+      console.error(errorMsg);
+      throw new Error(errorMsg);
+    }
+
+    try {
       const html = await response.text();
       this.loadedComponents.set(componentName, html);
+      console.log(`Successfully cached component: ${componentName}`);
       return html;
     } catch (error) {
-      console.error(`Error loading component ${componentName}:`, error);
+      console.error(`Error parsing component ${componentName}:`, error);
       return `<div class="component-error">Failed to load ${componentName}</div>`;
     }
   }

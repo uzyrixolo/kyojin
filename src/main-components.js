@@ -4,6 +4,8 @@
  */
 
 import { ComponentLoader } from './component-loader.js';
+import { LoadingScreen } from './loading-screen.js';
+import { BiomeAnimations } from './biome-animations.js';
 
 // Define the component loading order
 const COMPONENT_ORDER = [
@@ -27,19 +29,19 @@ const COMPONENT_ORDER = [
  */
 async function initializeApp() {
   try {
-    // Show loading state
-    const app = document.getElementById('app');
+    // Create and start loading screen
+    const loadingScreen = new LoadingScreen();
     
-    // Create component loader instance
-    const loader = new ComponentLoader();
+    // Set up loading completion callback
+    loadingScreen.onLoadingComplete(async () => {
+      console.log('🎬 Loading complete! Initializing components...');
+      
+      // Now load components after loading screen is done
+      await loadComponents();
+    });
     
-    // Load and build the entire page
-    await loader.buildPage(COMPONENT_ORDER, '#app');
-    
-    // Initialize any component-specific functionality
-    await initializeComponentFeatures();
-    
-    console.log('✅ All components loaded successfully');
+    // Start the loading process
+    await loadingScreen.start();
     
   } catch (error) {
     console.error('❌ Error initializing app:', error);
@@ -68,6 +70,31 @@ ${error.stack || 'No stack trace available'}</pre>
         </div>
       `;
     }
+  }
+}
+
+/**
+ * Load components after loading screen completes
+ */
+async function loadComponents() {
+  try {
+    // Show loading state
+    const app = document.getElementById('app');
+    
+    // Create component loader instance
+    const loader = new ComponentLoader();
+    
+    // Load and build the entire page
+    await loader.buildPage(COMPONENT_ORDER, '#app');
+    
+    // Initialize any component-specific functionality
+    await initializeComponentFeatures();
+    
+    console.log('✅ All components loaded successfully');
+    
+  } catch (error) {
+    console.error('❌ Error loading components:', error);
+    throw error; // Re-throw to be caught by main error handler
   }
 }
 
@@ -280,10 +307,11 @@ function initializeButtons() {
  * Initialize animations (placeholder for Anime.js integration)
  */
 function initializeAnimations() {
-  // This is where you would initialize your Anime.js animations
-  // for the biome growth effects and other organic animations
+  // Initialize biome growth animations with Anime.js
+  const biomeAnimations = new BiomeAnimations();
+  biomeAnimations.init();
   
-  console.log('🎬 Animations initialized (ready for Anime.js integration)');
+  console.log('🎬 Biome animations initialized with Anime.js');
   
   // Example: Fade in components as they load
   const sections = document.querySelectorAll('section');

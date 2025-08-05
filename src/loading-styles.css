@@ -1,0 +1,334 @@
+/* ============================================
+   LOADING SCREEN STYLES
+   ============================================ */
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #F5F0E3 0%, #FAFBE4 71%, #F7F9EF 100%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  overflow: hidden;
+}
+
+.loading-screen-visible {
+  opacity: 1;
+}
+
+.loading-screen-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Loading Logo and Favicon */
+.loading-logo {
+  position: relative;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-favicon {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  position: relative;
+  z-index: 3;
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+/* Pulsing rings around the favicon */
+.loading-pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border: 2px solid rgba(45, 80, 22, 0.3);
+  border-radius: 50%;
+  animation: pulseRing 2s ease-out infinite;
+}
+
+.loading-pulse-ring-delay-1 {
+  animation-delay: 0.5s;
+  border-color: rgba(139, 115, 85, 0.25);
+}
+
+.loading-pulse-ring-delay-2 {
+  animation-delay: 1s;
+  border-color: rgba(45, 80, 22, 0.2);
+}
+
+/* Loading Text */
+.loading-text {
+  margin-bottom: 1rem;
+}
+
+.loading-title {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #25382d;
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+  animation: titleFadeIn 1s ease 0.5s both;
+}
+
+.loading-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 2rem;
+  opacity: 0.8;
+  animation: subtitleFadeIn 1s ease 1s both;
+}
+
+/* Progress Bar */
+.loading-progress-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 300px;
+  animation: progressFadeIn 1s ease 1.5s both;
+}
+
+.loading-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(37, 56, 45, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loading-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2d5016 0%, #4a7c23 100%);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.loading-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+  animation: progressShimmer 2s infinite;
+}
+
+.loading-percentage {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #25382d;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Floating Particles */
+.loading-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.loading-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(139, 115, 85, 0.3);
+  border-radius: 50%;
+  animation: particleFloat 8s linear infinite;
+}
+
+.loading-particle:nth-child(1) {
+  left: 10%;
+  animation-delay: 0s;
+  animation-duration: 6s;
+}
+
+.loading-particle:nth-child(2) {
+  left: 20%;
+  animation-delay: 1s;
+  animation-duration: 8s;
+}
+
+.loading-particle:nth-child(3) {
+  left: 70%;
+  animation-delay: 2s;
+  animation-duration: 7s;
+}
+
+.loading-particle:nth-child(4) {
+  left: 80%;
+  animation-delay: 1.5s;
+  animation-duration: 9s;
+}
+
+.loading-particle:nth-child(5) {
+  left: 50%;
+  animation-delay: 3s;
+  animation-duration: 6.5s;
+}
+
+.loading-particle:nth-child(6) {
+  left: 90%;
+  animation-delay: 2.5s;
+  animation-duration: 8.5s;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes titleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtitleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progressFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progressShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-10vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   MOBILE RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .loading-favicon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .loading-pulse-ring {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .loading-title {
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+  
+  .loading-subtitle {
+    font-size: 1rem;
+  }
+  
+  .loading-progress-container {
+    width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-favicon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .loading-pulse-ring {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .loading-title {
+    font-size: 1.8rem;
+  }
+  
+  .loading-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .loading-progress-container {
+    width: 200px;
+  }
+}

@@ -277,7 +277,6 @@
   background: #e6e6da;
   border: 2px solid #bfc2b3;
   border-radius: 1.2rem;
-  padding: 1.2rem 1.2rem 0.7rem 1.2rem;
   min-height: 250px;
   display: flex;
   flex-direction: column;
@@ -289,6 +288,8 @@
 
 .testimonial-stars {
   font-size: 1.1rem;
+  padding: 1.2rem 1.2rem 0.7rem 1.2rem;
+
   color: #25382d;
   margin-bottom: 0.7rem;
   letter-spacing: 0.1em;
@@ -296,6 +297,8 @@
 
 .testimonial-text {
   font-size: 1.1rem;
+  padding: 0 1.2rem 0.7rem 1.2rem;
+
   margin-bottom: 1.2rem;
   color: #25382d;
   line-height: 1.4;
@@ -304,6 +307,9 @@
 .testimonial-user {
   display: flex;
   align-items: center;
+  padding: 1.2rem 1.2rem 0.7rem 1.2rem;
+background-color: #fff;
+border-radius: 0 0 1.2rem 1.2rem;
   border-top: 1px solid #bfc2b3;
   padding-top: 0.5rem;
   margin-top: auto;
@@ -574,7 +580,7 @@
   
   .testimonial-card {
     min-height: 160px;
-    padding: 0.8rem;
+    padding: 0rem;
   }
 }
 
@@ -1174,21 +1180,21 @@ em {
 }
 
 .mobile-nav-link.active {
-  color: #8B7355;
+  color: #8B7355 !important;
   font-weight: 400;
-  background: transparent;
+  background: transparent !important;
   border: none;
 }
 
 .mobile-nav-link.active::before {
-  width: 40px;
+  width: 40px !important;
 }
 
 .mobile-nav-link.cart-link {
-  display: none;
+  display: none !important;
 }
 
-.mobile-nav-link.cart-link svg {
+.mobile-nav-link svg {
   width: 18px;
   height: 18px;
 }
@@ -1764,8 +1770,8 @@ em {
 
 @media (max-width: 900px) {
   .golden-circle-bg { 
-    width: 220px; 
-    height: 220px; 
+    width: 350px; 
+    height: 350px; 
   }
   
   .center-icon svg {
@@ -1773,11 +1779,44 @@ em {
     height: 130px;
   }
   
-  .video-text { font-size: 1.3rem; }
+  .video-text { font-size: 2rem; }
   .video-text-bottom-center { 
-    font-size: 1.1rem; 
+    font-size: 2rem; 
     width: 80vw;
     line-height: 1.3;
+  }
+  
+  /* Mobile-specific video text repositioning */
+  .video-text-left {
+    left: 50%;
+    top: 15%;
+    transform: translateX(-50%);
+    width: 80vw;
+    text-align: center;
+  }
+  
+  .video-text-right {
+    left: 50%;
+    top: 70%;
+    transform: translateX(-50%);
+    width: 80vw;
+    text-align: center;
+  }
+  
+  .video-text-bottom-left {
+    left: 50%;
+    top: 15%;
+    transform: translateX(-50%);
+    width: 80vw;
+    text-align: center;
+  }
+  
+  .video-text-bottom-right {
+    left: 50%;
+    top: 70%;
+    transform: translateX(-50%);
+    width: 80vw;
+    text-align: center;
   }
 }
 
@@ -1914,7 +1953,7 @@ em {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-    /* margin-right: var(--spacing-sm); */
+    margin-left:4rem;
   }
   
   .nav-right .nav-link:not(.cart-link) {

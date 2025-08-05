@@ -25,6 +25,7 @@
   background-repeat: no-repeat;
   color: #fff;
   /* border: 1px solid rgba(162, 161, 155, 0.056); */
+      border: 1px solid #3b5649;
   overflow: hidden;
 }
 .blog-card::before {
@@ -1076,7 +1077,7 @@ em {
 
 .mobile-menu-overlay {
   position: fixed;
-  top: calc(12vh);
+  top: calc(8vh);
   left: -100%;
   width: 100vw;
   height: calc(88vh);

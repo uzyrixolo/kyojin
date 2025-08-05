@@ -17,8 +17,10 @@ const COMPONENT_ORDER = [
   'blog-section',
   'footer'
 ];
-import * as anime from 'animejs';
-import './footer-marquee.js';
+
+// Temporarily comment out anime.js import until needed for animations
+// import * as anime from 'animejs';
+// import './footer-marquee.js';
 
 /**
  * Initialize the application with component-based architecture

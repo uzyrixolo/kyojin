@@ -5,7 +5,7 @@
 
 import { ComponentLoader } from './component-loader.js';
 import { LoadingScreen } from './loading-screen.js';
-import { BiomeAnimations } from './biome-animations.js';
+// import { BiomeAnimations } from './biome-animations.js'; // Temporarily disabled
 
 // Define the component loading order
 const COMPONENT_ORDER = [
@@ -307,11 +307,11 @@ function initializeButtons() {
  * Initialize animations (placeholder for Anime.js integration)
  */
 function initializeAnimations() {
-  // Initialize biome growth animations with Anime.js
-  const biomeAnimations = new BiomeAnimations();
-  biomeAnimations.init();
+  // Temporarily disabled biome animations - will fix in next step
+  // const biomeAnimations = new BiomeAnimations();
+  // biomeAnimations.init();
   
-  console.log('🎬 Biome animations initialized with Anime.js');
+  console.log('🎬 Basic animations initialized (Biome animations temporarily disabled)');
   
   // Example: Fade in components as they load
   const sections = document.querySelectorAll('section');

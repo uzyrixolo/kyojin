@@ -3,7 +3,7 @@
  * Shows how to use Anime.js for biome growth animations in your vanilla JS project
  */
 
-import anime from 'animejs/lib/anime.es.js';
+import anime from 'animejs';
 
 class BiomeAnimations {
   constructor() {

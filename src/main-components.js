@@ -41,16 +41,31 @@ async function initializeApp() {
     
   } catch (error) {
     console.error('❌ Error initializing app:', error);
-    document.getElementById('app').innerHTML = `
-      <div class="error-state">
-        <h1>Error Loading Page</h1>
-        <p>There was an issue loading the page components. Please refresh and try again.</p>
-        <details>
-          <summary>Technical Details</summary>
-          <pre>${error.message}</pre>
-        </details>
-      </div>
-    `;
+    console.error('Error details:', error.stack);
+    
+    // More detailed error handling
+    const app = document.getElementById('app');
+    if (app) {
+      app.innerHTML = `
+        <div class="error-state" style="padding: 2rem; text-align: center; font-family: Inter, sans-serif;">
+          <h1 style="color: #d32f2f; margin-bottom: 1rem;">Component Loading Error</h1>
+          <p style="margin-bottom: 1rem;">There was an issue loading the page components.</p>
+          <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">
+            This might be due to network issues or deployment problems.
+          </p>
+          <button onclick="window.location.reload()" 
+                  style="background: #2d5016; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer;">
+            Retry Loading
+          </button>
+          <details style="margin-top: 1rem; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <summary style="cursor: pointer; color: #666;">Technical Details</summary>
+            <pre style="background: #f5f5f5; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.8rem;">${error.message}
+
+${error.stack || 'No stack trace available'}</pre>
+          </details>
+        </div>
+      `;
+    }
   }
 }
 

@@ -16,21 +16,32 @@ class ComponentLoader {
    */
   async loadComponent(componentName) {
     if (this.loadedComponents.has(componentName)) {
+      console.log(`📦 Using cached component: ${componentName}`);
       return this.loadedComponents.get(componentName);
     }
 
     try {
-      const response = await fetch(`${this.componentsPath}${componentName}.html`);
+      const url = `${this.componentsPath}${componentName}.html`;
+      console.log(`🔄 Loading component from: ${url}`);
+      
+      const response = await fetch(url);
       if (!response.ok) {
-        throw new Error(`Failed to load component: ${componentName}`);
+        throw new Error(`HTTP ${response.status}: Failed to load component ${componentName} from ${url}`);
       }
       
       const html = await response.text();
       this.loadedComponents.set(componentName, html);
+      console.log(`✅ Successfully loaded component: ${componentName}`);
       return html;
     } catch (error) {
-      console.error(`Error loading component ${componentName}:`, error);
-      return `<div class="component-error">Failed to load ${componentName}</div>`;
+      console.error(`❌ Error loading component ${componentName}:`, error);
+      const errorHtml = `
+        <div class="component-error" style="padding: 1rem; background: #ffebee; border: 1px solid #e57373; border-radius: 4px; margin: 0.5rem 0;">
+          <strong>Component Error:</strong> Failed to load ${componentName}
+          <br><small>Check console for details</small>
+        </div>
+      `;
+      return errorHtml;
     }
   }
 

@@ -4,8 +4,11 @@
  */
 
 import { ComponentLoader } from './component-loader.js';
-import { LoadingScreen } from './loading-screen.js';
-// import { BiomeAnimations } from './biome-animations.js'; // Temporarily disabled
+import { BiomeLoadingScreen } from './gsap-biome-loading.js';
+import './footer-train-animation.js';
+import './testimonial-train-animation.js';
+import './force-testimonial-animations.js'; // Force testimonial animations to work
+// Using GSAP for animations - loaded separately in gsap-scroll-animation.js
 
 // Define the component loading order
 const COMPONENT_ORDER = [
@@ -20,7 +23,7 @@ const COMPONENT_ORDER = [
   'footer'
 ];
 
-// Temporarily comment out anime.js import until needed for animations
+// Temporarily comment out anime.js import - using GSAP instead
 // import * as anime from 'animejs';
 // import './footer-marquee.js';
 
@@ -28,18 +31,22 @@ const COMPONENT_ORDER = [
  * Initialize the application with component-based architecture
  */
 async function initializeApp() {
+  console.log('🚀 Starting app initialization...');
+    
   try {
-    // Create and start loading screen
-    const loadingScreen = new LoadingScreen();
+    console.log('🌱 Creating GSAP biome loading screen...');
+    // Create and start biome loading screen
+    const loadingScreen = new BiomeLoadingScreen();
     
     // Set up loading completion callback
     loadingScreen.onLoadingComplete(async () => {
-      console.log('🎬 Loading complete! Initializing components...');
+      console.log('🎬 Biome loading complete! Initializing components...');
       
       // Now load components after loading screen is done
       await loadComponents();
     });
     
+    console.log('▶️ Starting biome loading screen...');
     // Start the loading process
     await loadingScreen.start();
     
@@ -304,16 +311,12 @@ function initializeButtons() {
 }
 
 /**
- * Initialize animations (placeholder for Anime.js integration)
+ * Initialize animations (using GSAP - loaded separately)
  */
 function initializeAnimations() {
-  // Temporarily disabled biome animations - will fix in next step
-  // const biomeAnimations = new BiomeAnimations();
-  // biomeAnimations.init();
+  console.log('🎬 GSAP animations loaded separately via gsap-scroll-animation.js');
   
-  console.log('🎬 Basic animations initialized (Biome animations temporarily disabled)');
-  
-  // Example: Fade in components as they load
+  // Basic fade-in for sections
   const sections = document.querySelectorAll('section');
   sections.forEach((section, index) => {
     section.style.opacity = '0';

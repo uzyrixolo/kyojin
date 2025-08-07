@@ -133,6 +133,8 @@ em {
   font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1001;
 }
 
 .notification-content {
@@ -149,15 +151,108 @@ em {
   opacity: 0.8;
 }
 
-/* Header */
+/* Header - BULLETPROOF VERSION */
 .main-header {
-  background-color: var(--color-background);
-  border-bottom: 1px solid var(--color-border);
-  position: sticky;
+  position: fixed !important;
+  top: 36px !important; /* Space for notification bar initially */
+  left: 0 !important;
+  width: 100vw !important;
+  z-index: 1000 !important;
+  background: transparent;
+  border-bottom: none;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  transition: top 0.3s ease, background 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+/* FORCE header positioning - override ALL other styles */
+.main-header,
+.main-header.sticky,
+.main-header.sticky.at-bottom {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  transform: none !important;
+  transform: translateY(0) !important;
+  transform: translateX(0) !important;
+  transform: translate(0, 0) !important;
+  inset: auto auto auto 0 !important;
+}
+
+.main-header.sticky {
+  top: 0 !important; /* Move to very top when sticky (notification bar hidden) */
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(25px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+.main-header.sticky::before {
+  content: '';
+  position: absolute;
   top: 0;
-  z-index: 100;
-  backdrop-filter: blur(20px);
-  background-color: rgba(255, 255, 255, 0.95);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.main-header.sticky.at-bottom {
+  top: 0 !important; /* Stay at very top when at bottom */
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(30px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+  box-shadow: 0 2px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.main-header.sticky.at-bottom::before {
+  opacity: 0.8;
+}
+
+/* NUCLEAR OPTION - Override any GSAP or JS animations */
+.main-header[style*="margin"],
+.main-header[style*="transform"] {
+  margin: 0 !important;
+  margin-top: 0 !important;
+  transform: none !important;
+}
+
+/* Allow top property to work for notification bar positioning */
+.main-header:not(.sticky)[style*="top"] {
+  top: 36px !important; /* Below notification bar when not sticky */
+}
+
+.main-header.sticky[style*="top"] {
+  top: 0 !important; /* At very top when sticky */
+}
+
+/* ULTIMATE OVERRIDE - Use high specificity */
+body .main-header,
+html body .main-header,
+html body .main-header.sticky,
+html body .main-header.sticky.at-bottom {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  margin: 0 !important;
+  margin-top: 0 !important;
+  transform: none !important;
+}
+
+/* Ensure notification bar is positioned above everything */
+.notification-bar {
+  position: relative;
+  z-index: 1001;
 }
 
 .nav-container {
@@ -177,6 +272,51 @@ em {
 
 .nav-logo {
   justify-self: center;
+}
+
+/* Logo Image Styles */
+.logo-image {
+  height: 40px;
+  width: auto;
+  transition: opacity 0.3s ease;
+}
+
+/* Logo Swap Functionality */
+.main-header .main-logo {
+  display: block;
+}
+
+.main-header .sticky-logo {
+  display: none;
+}
+
+.main-header.sticky .main-logo {
+  display: none;
+}
+
+.main-header.sticky .sticky-logo {
+  display: block;
+}
+
+/* Debug Indicator for Sticky Header */
+.sticky-debug {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  background: #ff4444;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateX(100px);
+  transition: all 0.3s ease;
+}
+
+.sticky-debug.active {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .nav-right {
@@ -226,12 +366,19 @@ em {
 
 /* Hero Section */
 .hero-section {
-  min-height: 100vh;
+  min-height: 90vh; /* Reduced from 100vh to eliminate bottom gap */
   display: flex;
   align-items: center;
   background-color: var(--color-background-alt);
   position: relative;
   overflow: hidden;
+  padding-top: 80px; /* Reduced from 100px - optimal space for header */
+  padding-bottom: 20px; /* Reduced from 60px - eliminate bottom gap */
+  margin-bottom: 0;
+  /* Ensure solid background extends fully */
+  border-bottom: 1px solid var(--color-background-alt);
+  /* Completely cover any content below */
+  box-shadow: 0 10px 0 0 var(--color-background-alt);
 }
 
 .hero-container {
